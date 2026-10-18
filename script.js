@@ -125,3 +125,59 @@ noteForm.addEventListener("submit", function (event) {
     errorMessage.textContent = "";
 
 });
+
+function saveNotes() {
+
+    localStorage.setItem("quicknotes", JSON.stringify(notes));
+
+}
+
+
+function loadNotes() {
+
+    const savedNotes = localStorage.getItem("quicknotes");
+
+    if (savedNotes !== null) {
+
+        try {
+            const parsedNotes = JSON.parse(savedNotes);
+
+            if (Array.isArray(parsedNotes)) {
+                notes = parsedNotes;
+            } else {
+                notes = [];
+            }
+
+        } catch (error) {
+            notes = [];
+            console.error("Could not load saved notes:", error);
+        }
+
+    }
+
+}
+
+searchInput.addEventListener("input", function () {
+
+    const searchTerm = searchInput.value.trim().toLowerCase();
+
+    const filteredNotes = notes.filter(function (note) {
+
+        return note.text.toLowerCase().includes(searchTerm);
+
+    });
+
+    render(filteredNotes);
+
+   
+    if (searchTerm !== "" && filteredNotes.length === 0) {
+
+        const message = document.createElement("li");
+
+        message.textContent = "No notes match your search.";
+
+        notesList.appendChild(message);
+
+    }
+
+});
