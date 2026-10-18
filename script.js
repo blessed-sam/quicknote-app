@@ -81,3 +81,47 @@ noteForm.addEventListener("submit", function (event) {
 
   noteInput.value = "";
 });
+
+noteForm.addEventListener("submit", function (event) {
+
+    event.preventDefault();
+
+    const text = noteInput.value.trim();
+    const category = noteCategory.value;
+
+   
+    errorMessage.textContent = "";
+
+  
+    if (text === "") {
+        errorMessage.textContent = "Please type a note first.";
+        return;
+    }
+
+ 
+    if (text.length > 200) {
+        errorMessage.textContent =
+            "Notes must be 200 characters or fewer.";
+        return;
+    }
+
+    const note = {
+        id: Date.now(),
+        text: text,
+        category: category,
+        createdAt: new Date().toLocaleString()
+    };
+
+   
+    notes.push(note);
+
+  
+    render();
+
+
+    noteInput.value = "";
+
+
+    errorMessage.textContent = "";
+
+});
